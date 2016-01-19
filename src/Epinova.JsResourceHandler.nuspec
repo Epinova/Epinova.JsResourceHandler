@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Epinova.JsResourceHandler</id>
+    <version>9.0.0.0</version>
+    <authors>Epinova AS</authors>
+    <owners>Epinova</owners>
+    <licenseUrl></licenseUrl>
+    <projectUrl></projectUrl>
+    <iconUrl>http://www.epinova.no/favicon.ico</iconUrl>
+    <description>Module to serve language XML files as JSON into a separate HTTP request. Easily enables 
+      translated resource texts within Javascript files.</description>
+    <copyright>Epinova AS 2016</copyright>
+    <tags>Epinova Episerver Javascript Resources</tags>
+    <dependencies>
+      <dependency id="EPiServer.CMS.Core" version="[9.0.0, 10.0.0)"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="readme.md" target="" />
+    <file src="src\web.config.install.xdt" target="content" />
+    <file src="src\web.config.uninstall.xdt" target="content" />
+  </files>
+</package>
