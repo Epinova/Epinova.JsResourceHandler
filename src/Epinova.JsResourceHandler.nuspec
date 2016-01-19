@@ -17,7 +17,7 @@
   </metadata>
   <files>
     <file src="readme.txt" target="" />
-    <file src="src\web.config.install.xdt" target="content" />
-    <file src="src\web.config.uninstall.xdt" target="content" />
+    <file src="web.config.install.xdt" target="content" />
+    <file src="web.config.uninstall.xdt" target="content" />
   </files>
 </package>
