@@ -5,9 +5,8 @@
     <version>9.0.0.0</version>
     <authors>Epinova AS</authors>
     <owners>Epinova</owners>
-    <licenseUrl></licenseUrl>
-    <projectUrl></projectUrl>
     <iconUrl>http://www.epinova.no/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Module to serve language XML files as JSON into a separate HTTP request. Easily enables 
       translated resource texts within Javascript files.</description>
     <copyright>Epinova AS 2016</copyright>
