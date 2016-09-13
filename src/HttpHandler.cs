@@ -12,8 +12,6 @@ namespace Epinova.JsResourceHandler
 {
     public class HttpHandler : IHttpHandler
     {
-        
-
         public void ProcessRequest(HttpContext context)
         {
             LanguageSelector languageSelector = LanguageSelector.AutoDetect();
@@ -46,7 +44,7 @@ namespace Epinova.JsResourceHandler
             var nodeToSerialize = xElements.Count() == 1 ? xElements.First() : xDocument.Root;
 
             string serializeXmlNode = JsonConvert.SerializeXNode(nodeToSerialize, debugMode ? Formatting.Indented : Formatting.None, true);
-            return $"var jsl10n = {serializeXmlNode}";
+            return $"window.jsl10n = {serializeXmlNode}";
         }
 
         private static XDocument GetLanguageFile(string filename, HttpContext context, string languageName)
