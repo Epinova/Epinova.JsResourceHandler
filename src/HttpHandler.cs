@@ -12,13 +12,13 @@ namespace Epinova.JsResourceHandler
 {
     public class HttpHandler : IHttpHandler
     {
-        private const string PathBase = "jsl10n/";
+        
 
         public void ProcessRequest(HttpContext context)
         {
             LanguageSelector languageSelector = LanguageSelector.AutoDetect();
             var languageName = languageSelector.Language.Name;
-            string filename = context.Request.Path.Substring(PathBase.Length);
+            string filename = context.Request.Path.Substring(Constants.PathBase.Length);
 
             bool debugMode = context.Request.QueryString["debug"] != null;
 
