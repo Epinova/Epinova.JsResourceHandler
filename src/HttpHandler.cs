@@ -25,17 +25,18 @@ namespace Epinova.JsResourceHandler
 
             if (responseObject == null)
             {
-                responseObject = GetJson(context, filename, languageName, debugMode);
-                context.Cache.Insert(cacheKey, responseObject, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 2, 0, 0));
+                var filePath = GetFullFilePath(filename, context, languageName);
+                responseObject = GetJson(filePath, debugMode);
+                context.Cache.Insert(cacheKey, responseObject, new CacheDependency(filePath));
             }
 
             context.Response.Write(responseObject);
             context.Response.ContentType = "text/javascript";
         }
 
-        private static string GetJson(HttpContext context, string filename, string languageName, bool debugMode)
+        private static string GetJson(string filePath, bool debugMode)
         {
-            XDocument xDocument = GetLanguageFile(filename, context, languageName);
+            XDocument xDocument = GetLanguageFile(filePath);
             if (xDocument == null)
                 return null;
 
@@ -47,9 +48,9 @@ namespace Epinova.JsResourceHandler
             return $"window.jsl10n = {serializeXmlNode}";
         }
 
-        private static XDocument GetLanguageFile(string filename, HttpContext context, string languageName)
+        private static XDocument GetLanguageFile(string filename)
         {
-            var file = GetFileStream(filename, context, languageName);
+            var file = GetFileStream(filename);
             if (file == null)
                 return null;
 
@@ -58,18 +59,25 @@ namespace Epinova.JsResourceHandler
             return xDocument;
         }
 
-        private static FileStream GetFileStream(string filename, HttpContext context, string languageName)
+        private static string GetFullFilePath(string filename, HttpContext context, string languageName)
         {
             string basePath = $"/lang/{filename}.{languageName.ToUpper()}.xml";
 
             var filePath = context.Server.MapPath(basePath);
 
             if (!File.Exists(filePath))
-                filePath = $"/lang/{filename}.xml";
+                basePath = $"/lang/{filename}.xml";
+
+            filePath = context.Server.MapPath(basePath);
 
             if (!File.Exists(filePath))
                 return null;
 
+            return filePath;
+        }
+
+        private static FileStream GetFileStream(string filePath)
+        {
             FileStream file = File.OpenRead(filePath);
 
             return file;
