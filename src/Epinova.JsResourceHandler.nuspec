@@ -2,8 +2,8 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Epinova.JsResourceHandler</id>
-    <version>9.0.0.0</version>
-    <authors>Epinova AS</authors>
+    <version>10.0.0.0</version>
+    <authors>Arve Systad (Epinova AS)</authors>
     <owners>Epinova</owners>
     <iconUrl>http://www.epinova.no/favicon.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,7 +12,7 @@
     <copyright>Epinova AS 2016</copyright>
     <tags>Epinova Episerver Javascript Resources</tags>
     <dependencies>
-      <dependency id="EPiServer.CMS.Core" version="[9.0.0, 10.0.0)"/>
+      <dependency id="EPiServer.CMS.Core" version="[10.0.0, 11.0.0)"/>
     </dependencies>
   </metadata>
   <files>
