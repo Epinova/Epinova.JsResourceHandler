@@ -13,8 +13,6 @@ namespace Epinova.JsResourceHandler
             RouteTable.Routes.IgnoreRoute(Constants.IgnoreRoute);
         }
 
-        public void Uninitialize(InitializationEngine context)
-        {
-        }
+        public void Uninitialize(InitializationEngine context) { }
     }
 }

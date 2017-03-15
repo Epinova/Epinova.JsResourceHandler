@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System;
 using System.Web;
-using System.Web.Caching;
-using System.Xml.Linq;
 using EPiServer.Core;
-using Newtonsoft.Json;
+using EPiServer.ServiceLocation;
 
 namespace Epinova.JsResourceHandler
 {
     public class HttpHandler : IHttpHandler
     {
+        private Injected<IResourceListProvider> _provider;
+
         public void ProcessRequest(HttpContext context)
         {
+            if(_provider.Service == null)
+                throw new InvalidOperationException("Implementation of `IResourceListProvider` is not configured in IoC container.");
+
             var languageSelector = LanguageSelector.AutoDetect();
             var languageName = languageSelector.Language.Name;
             var filename = context.Request.Path.Substring(Constants.PathBase.Length);
@@ -22,65 +23,15 @@ namespace Epinova.JsResourceHandler
             var cacheKey = $"{filename}_{languageName}_{(debugMode ? "debug" : "release")}}}";
             var responseObject = context.Cache.Get(cacheKey) as string;
 
-            if (responseObject == null)
+            if(responseObject == null)
             {
-                var filePath = GetFullFilePath(filename, context, languageName);
-                responseObject = GetJson(filePath, debugMode);
-                context.Cache.Insert(cacheKey, responseObject, new CacheDependency(filePath));
+                responseObject = _provider.Service.GetJson(filename, context, languageName, debugMode);
+
+                context.Cache.Insert(cacheKey, responseObject, _provider.Service.GetCacheDependency());
             }
 
             context.Response.Write(responseObject);
             context.Response.ContentType = "text/javascript";
-        }
-
-        private static string GetJson(string filePath, bool debugMode)
-        {
-            var xDocument = GetLanguageFile(filePath);
-            if (xDocument == null)
-                return null;
-
-            var xElements = xDocument.Root.Elements("language");
-
-            var nodeToSerialize = xElements.Count() == 1 ? xElements.First() : xDocument.Root;
-            var serializeXmlNode = JsonConvert.SerializeXNode(nodeToSerialize, debugMode ? Formatting.Indented : Formatting.None, true);
-
-            return $"window.jsl10n = {serializeXmlNode}";
-        }
-
-        private static XDocument GetLanguageFile(string filename)
-        {
-            var file = GetFileStream(filename);
-            if (file == null)
-                return null;
-
-            var xDocument = XDocument.Load(file);
-            file.Close();
-
-            return xDocument;
-        }
-
-        private static string GetFullFilePath(string filename, HttpContext context, string languageName)
-        {
-            string basePath = $"/Resources/LanguageFiles/{filename}.{languageName.ToUpper()}.xml";
-
-            var filePath = context.Server.MapPath(basePath);
-
-            if (!File.Exists(filePath))
-                basePath = $"/Resources/LanguageFiles/{filename}.xml";
-
-            filePath = context.Server.MapPath(basePath);
-
-            if (!File.Exists(filePath))
-                return null;
-
-            return filePath;
-        }
-
-        private static FileStream GetFileStream(string filePath)
-        {
-            var file = File.OpenRead(filePath);
-
-            return file;
         }
 
         public bool IsReusable { get; }
