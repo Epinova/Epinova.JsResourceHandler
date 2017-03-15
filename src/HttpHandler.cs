@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -14,14 +13,14 @@ namespace Epinova.JsResourceHandler
     {
         public void ProcessRequest(HttpContext context)
         {
-            LanguageSelector languageSelector = LanguageSelector.AutoDetect();
+            var languageSelector = LanguageSelector.AutoDetect();
             var languageName = languageSelector.Language.Name;
-            string filename = context.Request.Path.Substring(Constants.PathBase.Length);
+            var filename = context.Request.Path.Substring(Constants.PathBase.Length);
 
-            bool debugMode = context.Request.QueryString["debug"] != null;
+            var debugMode = context.Request.QueryString["debug"] != null;
 
-            string cacheKey = $"{filename}_{languageName}_{(debugMode ? "debug" : "release")}}}";
-            string responseObject = context.Cache.Get(cacheKey) as string;
+            var cacheKey = $"{filename}_{languageName}_{(debugMode ? "debug" : "release")}}}";
+            var responseObject = context.Cache.Get(cacheKey) as string;
 
             if (responseObject == null)
             {
@@ -36,15 +35,15 @@ namespace Epinova.JsResourceHandler
 
         private static string GetJson(string filePath, bool debugMode)
         {
-            XDocument xDocument = GetLanguageFile(filePath);
+            var xDocument = GetLanguageFile(filePath);
             if (xDocument == null)
                 return null;
 
-            IEnumerable<XElement> xElements = xDocument.Root.Elements("language");
+            var xElements = xDocument.Root.Elements("language");
 
             var nodeToSerialize = xElements.Count() == 1 ? xElements.First() : xDocument.Root;
+            var serializeXmlNode = JsonConvert.SerializeXNode(nodeToSerialize, debugMode ? Formatting.Indented : Formatting.None, true);
 
-            string serializeXmlNode = JsonConvert.SerializeXNode(nodeToSerialize, debugMode ? Formatting.Indented : Formatting.None, true);
             return $"window.jsl10n = {serializeXmlNode}";
         }
 
@@ -56,6 +55,7 @@ namespace Epinova.JsResourceHandler
 
             var xDocument = XDocument.Load(file);
             file.Close();
+
             return xDocument;
         }
 
@@ -78,7 +78,7 @@ namespace Epinova.JsResourceHandler
 
         private static FileStream GetFileStream(string filePath)
         {
-            FileStream file = File.OpenRead(filePath);
+            var file = File.OpenRead(filePath);
 
             return file;
         }
