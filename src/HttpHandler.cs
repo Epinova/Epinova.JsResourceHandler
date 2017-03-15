@@ -61,12 +61,12 @@ namespace Epinova.JsResourceHandler
 
         private static string GetFullFilePath(string filename, HttpContext context, string languageName)
         {
-            string basePath = $"/lang/{filename}.{languageName.ToUpper()}.xml";
+            string basePath = $"/Resources/LanguageFiles/{filename}.{languageName.ToUpper()}.xml";
 
             var filePath = context.Server.MapPath(basePath);
 
             if (!File.Exists(filePath))
-                basePath = $"/lang/{filename}.xml";
+                basePath = $"/Resources/LanguageFiles/{filename}.xml";
 
             filePath = context.Server.MapPath(basePath);
 

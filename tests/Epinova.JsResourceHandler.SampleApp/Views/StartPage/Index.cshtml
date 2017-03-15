@@ -1,0 +1,12 @@
+@using Epinova.JsResourceHandler.SampleApp
+@model PageViewModel<Epinova.JsResourceHandler.SampleApp.Models.Pages.StartPage>
+
+@*@Html.PropertyFor(x => x.CurrentPage.MainContentArea, new { CssClass = "row equal-height", tag = Global.ContentAreaTags.FullWidth })*@
+
+<div id="placeholder"></div>
+
+<script src="http://localhost:47347/jsl10n/sampleFile"></script>
+
+<script type="text/javascript">
+    document.getElementById('placeholder').innerHTML = window.jsl10n.sampleResource.samplesubKey;
+</script>
