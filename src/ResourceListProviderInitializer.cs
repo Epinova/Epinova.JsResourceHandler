@@ -5,7 +5,7 @@ using EPiServer.ServiceLocation;
 namespace Epinova.JsResourceHandler
 {
     [InitializableModule]
-    public class RegisterXmlFileProviderInitializer : IConfigurableModule
+    public class ResourceListProviderInitializer : IConfigurableModule
     {
         public void Initialize(InitializationEngine context) { }
 
