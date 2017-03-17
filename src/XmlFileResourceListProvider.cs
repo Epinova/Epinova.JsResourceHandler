@@ -22,9 +22,7 @@ namespace Epinova.JsResourceHandler
             var xElements = xDocument.Root.Elements("language");
 
             var nodeToSerialize = xElements.Count() == 1 ? xElements.First() : xDocument.Root;
-            var serializeXmlNode = JsonConvert.SerializeXNode(nodeToSerialize, debugMode ? Formatting.Indented : Formatting.None, true);
-
-            return $"window.jsl10n = {serializeXmlNode}";
+            return JsonConvert.SerializeXNode(nodeToSerialize, debugMode ? Formatting.Indented : Formatting.None, true);
         }
 
         public CacheDependency GetCacheDependency()

@@ -16,7 +16,7 @@ namespace Epinova.JsResourceHandler
 
             var languageSelector = LanguageSelector.AutoDetect();
             var languageName = languageSelector.Language.Name;
-            var filename = context.Request.Path.Substring(Constants.PathBase.Length);
+            var filename = ExtractFileName(context);
 
             var debugMode = context.Request.QueryString["debug"] != null;
 
@@ -26,12 +26,21 @@ namespace Epinova.JsResourceHandler
             if(responseObject == null)
             {
                 responseObject = _provider.Service.GetJson(filename, context, languageName, debugMode);
+                responseObject = $"window.jsl10n = {responseObject}";
 
-                context.Cache.Insert(cacheKey, responseObject, _provider.Service.GetCacheDependency());
+                var dependency = _provider.Service.GetCacheDependency();
+                if(dependency != null)
+                    context.Cache.Insert(cacheKey, responseObject, dependency);
             }
 
             context.Response.Write(responseObject);
             context.Response.ContentType = "text/javascript";
+        }
+
+        private static string ExtractFileName(HttpContext context)
+        {
+            var result = context.Request.Path.Replace(Constants.PathBase, string.Empty);
+            return result.StartsWith("/") ? result.TrimStart('/') : result;
         }
 
         public bool IsReusable { get; }
