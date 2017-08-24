@@ -45,7 +45,7 @@ namespace Epinova.JsResourceHandler
             var nodeToSerialize = xElements.Count() == 1 ? xElements.First() : xDocument.Root;
 
             string serializeXmlNode = JsonConvert.SerializeXNode(nodeToSerialize, debugMode ? Formatting.Indented : Formatting.None, true);
-            return $"window.jsl10n = {serializeXmlNode}";
+            return $"window.jsl10n = {serializeXmlNode};\n{Javascript.PolyfillReduce}\n{Javascript.TranslateFunction}";
         }
 
         private static XDocument GetLanguageFile(string filename)
