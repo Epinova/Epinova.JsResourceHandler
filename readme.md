@@ -17,13 +17,24 @@ The object it outputs is called `jsl10n` (`window.jsl10n`).
 
 Append `?debug=true` to the URL to get indented JSON for debugging/inspection purposes.
 
-### Example usage 1: Normal JS
+### Example usages
 
+#### Function translate
+	$(function() {
+		var cuteTextNode = window.jsl10n.translate("articlePage/myCuteTextNode")
+	})
+    
+#### Function translate with fallback
+	$(function() {
+		var cuteTextNode = window.jsl10n.translate("articlePage/myCuteTextNode") || "My Cute Text"
+	})
+
+#### Direct object refrence
     $(function() {
     	var cuteTextNode = window.jsl10n.articlepage.myCuteTextNode;
     })
-
-### Example usage 2: Angular language service
+    
+### Inject Angular language service
 
     var translator = function () {
         return window.jsl10n;
