@@ -149,7 +149,6 @@
     <Compile Include="Constants.cs" />
     <Compile Include="HttpHandler.cs" />
     <Compile Include="IgnoreRouteInitializer.cs" />
-    <Compile Include="Javascript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +158,7 @@
     <None Include="web.config.uninstall.xdt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TranslateFunction.js" />
+    <EmbeddedResource Include="TranslateFunction.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
