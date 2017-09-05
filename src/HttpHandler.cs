@@ -7,6 +7,7 @@ using System.Web.Caching;
 using System.Xml.Linq;
 using EPiServer.Core;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Epinova.JsResourceHandler
 {
@@ -45,7 +46,10 @@ namespace Epinova.JsResourceHandler
             var nodeToSerialize = xElements.Count() == 1 ? xElements.First() : xDocument.Root;
 
             string serializeXmlNode = JsonConvert.SerializeXNode(nodeToSerialize, debugMode ? Formatting.Indented : Formatting.None, true);
-            return $"window.jsl10n = {serializeXmlNode}";
+
+            var jsFunctions = GetEmbeddedResource("TranslateFunction.js");
+
+            return $"window.jsl10n = {serializeXmlNode};\n{jsFunctions}";
         }
 
         private static XDocument GetLanguageFile(string filename)
@@ -81,6 +85,17 @@ namespace Epinova.JsResourceHandler
             FileStream file = File.OpenRead(filePath);
 
             return file;
+        }
+
+        private static string GetEmbeddedResource(string resourceName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            using (Stream stream = assembly.GetManifestResourceStream($"{MethodBase.GetCurrentMethod().DeclaringType.Namespace}.{resourceName}"))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
         }
 
         public bool IsReusable { get; }
