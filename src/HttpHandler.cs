@@ -91,7 +91,7 @@ namespace Epinova.JsResourceHandler
         {
             var assembly = Assembly.GetExecutingAssembly();
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (Stream stream = assembly.GetManifestResourceStream($"{MethodBase.GetCurrentMethod().DeclaringType.Namespace}.{resourceName}"))
             using (StreamReader reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();
