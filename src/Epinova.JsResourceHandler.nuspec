@@ -12,7 +12,7 @@
     <copyright>Epinova AS 2016</copyright>
     <tags>Epinova Episerver Javascript Resources</tags>
     <dependencies>
-      <dependency id="EPiServer.CMS.Core" version="[10.0.0, 11.0.0)"/>
+      <dependency id="EPiServer.CMS.Core" version="[10.0.0, 11.4.0)"/>
     </dependencies>
   </metadata>
   <files>
